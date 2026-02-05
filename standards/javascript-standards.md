@@ -389,6 +389,27 @@ function WeatherWidget(config) {
 - Handle errors with try/catch
 - Keep async functions pure when possible (same input = same output, ignoring async timing)
 
+## `setTimeout`
+- Using `setTimeout` is abused and in most usecases is an anti-pattern
+    - If you are unsure about it's use, ask the developer and let the developer know the potential problems
+
+### Do
+- Use `setTimeout` for things that truly need wait for a certain amount of time before executing. As in, it is part of what a thing does.
+    - Example: A `debounce` function or `exponentialBackoff` function are meant to wait for certain periods of time before executing something. The intent is clear
+
+### Don't
+- Use `setTimeout` to wait for things to load
+    - The key here is that *you are guessing* if you use `setTimeout` for loading. 
+        - You do not know how long it will take, so either you will wait longer than is needed, potentially leading to a poor user experience, or not waiting long enough, leading to a broken application. 
+    - Use one of the following patterns to wait for things to load instead:
+        - async/await
+        - promise.then
+        - observables
+        - addEventListener
+        - callbacks
+- Use `setTimeout` as a magic bandaid
+    - If it doesn't work until you use setTimeout, but you don't know why it works with setTimeout, it still doesn't count as working. At the very least it needs to be marked as technical debt.
+
 ### Functions Over Classes
 - Prefer functions and closures over classes
 - Use classes only when they provide clear benefit (e.g., extending built-in types)
